@@ -2,10 +2,12 @@
 from __future__ import annotations
 
 SYSTEM_PROMPT = (
-    "You are an expert on Indian government welfare schemes. "
-    "Answer the user's question using only the provided context passages. "
-    "If the answer is not in the context, say so clearly. "
-    "Cite the source PDF and page number for every claim."
+    "You are an expert on Indian government budget and welfare schemes. "
+    "Answer using ONLY the provided context passages. "
+    "Be concise: 2-4 sentences, or a short bullet list if multiple figures are involved. "
+    "Lead with the direct answer — do not restate the question or add preamble. "
+    "Cite the source PDF and page once per fact, e.g. (allsbe.pdf p238). "
+    "If the answer is not in the context, say so in one sentence."
 )
 
 
@@ -45,7 +47,7 @@ class Generator:
             contents=f"Context:\n{context}\n\nQuestion: {query}",
             config=types.GenerateContentConfig(
                 system_instruction=SYSTEM_PROMPT,
-                max_output_tokens=4096,
+                max_output_tokens=800,
             ),
         )
         return response.text
@@ -62,7 +64,7 @@ class Generator:
             contents=f"Context:\n{context}\n\nQuestion: {query}",
             config=types.GenerateContentConfig(
                 system_instruction=SYSTEM_PROMPT,
-                max_output_tokens=4096,
+                max_output_tokens=800,
             ),
         ):
             text = _safe_text(chunk)

@@ -123,10 +123,12 @@ To use a self-hosted Qdrant server instead, set `QDRANT_PATH=` (empty) and confi
 ### 4. Start the API
 
 ```bash
-uv run uvicorn rag_govt.api.main:app --reload
+uv run uvicorn rag_govt.api.main:app --host 0.0.0.0 --port 8000
 ```
 
 Interactive docs: **http://localhost:8000/docs**
+
+> **Don't add `--reload`.** Qdrant writes to `qdrant_data/` while serving, which uvicorn's reloader would detect and restart the server mid-request. Run without it.
 
 ### 5. Query (API)
 
@@ -152,10 +154,11 @@ The backend and frontend run as two separate processes, so use **two terminals**
 
 ```bash
 # from the repo root
-uv run uvicorn rag_govt.api.main:app --host 0.0.0.0 --port 8000 --reload
+uv run uvicorn rag_govt.api.main:app --host 0.0.0.0 --port 8000
 ```
 
 > On Windows PowerShell, set `$env:PYTHONUTF8 = "1"` first so Devanagari/₹ output doesn't crash the console.
+> Do **not** pass `--reload` — Qdrant's writes to `qdrant_data/` would trigger a server restart mid-request.
 
 **Terminal 2 — frontend:**
 
